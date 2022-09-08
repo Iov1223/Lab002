@@ -32,9 +32,10 @@ namespace Lab002 { // Задание 007
             FindeFile myAuthorization = new FindeFile(arg1, arg2);
             FindeFile autoriz = new FindeFile(arg1, arg2);
             string poem = autoriz.readFileText();
-            string reg = autoriz.readFilceTmp().Remove(autoriz.readFilceTmp().Length - 2);
+            string reg = autoriz.readFilceTmp();
             Console.WriteLine("Считываемый файл:\n" + poem + "\n");
             Console.WriteLine("Шаблон для поиска - {0}", reg);
+            reg.Remove(autoriz.readFilceTmp().Length - 2);
             reg = @"\w*" + reg + @"\w*";
             Regex regex = new Regex(reg, RegexOptions.IgnoreCase);
             MatchCollection matches = regex.Matches(poem);
@@ -66,7 +67,7 @@ namespace Lab002 { // Задание 007
                 try
                 {
                     ResultOfProgramArg res = new ResultOfProgramArg();
-                    res.ShowResult(args[0], args[1]);
+                    res.ShowResult(args[0],args[1]);
                 }
                 catch
                 {
