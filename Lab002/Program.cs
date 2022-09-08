@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace Lab002 { // Задание 007
     class FindeFile {
-        string text;
+        private string text;
         private string Tmp;
         private string _path;
         private string _pathTMP;
@@ -32,26 +32,27 @@ namespace Lab002 { // Задание 007
             FindeFile myAuthorization = new FindeFile(arg1, arg2);
             FindeFile autoriz = new FindeFile(arg1, arg2);
             string poem = autoriz.readFileText();
-            string reg = autoriz.readFilceTmp();           
+            string reg = autoriz.readFilceTmp().Remove(autoriz.readFilceTmp().Length - 2);
             Console.WriteLine("Считываемый файл:\n" + poem + "\n");
             Console.WriteLine("Шаблон для поиска - {0}", reg);
-            Regex regex = new Regex(reg);
+            reg = @"\w*" + reg + @"\w*";
+            Regex regex = new Regex(reg, RegexOptions.IgnoreCase);
             MatchCollection matches = regex.Matches(poem);
             if (matches.Count > 0) {
                 foreach (Match m in matches) {
                     Console.WriteLine(m.Value);
                 }
+                Console.WriteLine("Количество совпадений = {0}.", matches.Count);
             }
             else {
                 Console.WriteLine("Совпадений не найдено.");
-            }
-            Console.WriteLine("Количество совпадений = {0}.", matches.Count);
+            }          
         }
     }
     class ResultOfProgramStr : ResultOfProgramArg {
         public void ShowResult() {
             Console.Write("В командную строку вводится два аргумента, оба заключаются в двойные кавчки: 1 - Полный путь к файлу с содержимым." +
-                   " 2 - Полный путь к файлу с шаблоном.\nВведите аргументы (здесь без кавычек) после ввода первого нажминет \"ENTER\": ");
+                   " 2 - Полный путь к файлу с шаблоном.\nВведите аргументы (здесь без кавычек), после ввода первого нажминет \"ENTER\": ");
             string firstArg = Console.ReadLine();
             string secondArg = Console.ReadLine();
             base.ShowResult(firstArg, secondArg);
@@ -62,12 +63,26 @@ namespace Lab002 { // Задание 007
         static void Main(string[] args) {
             
             if (args.Length == 2) {
-                ResultOfProgramArg res = new ResultOfProgramArg();
-                res.ShowResult(args[0], args[1]);
+                try
+                {
+                    ResultOfProgramArg res = new ResultOfProgramArg();
+                    res.ShowResult(args[0], args[1]);
+                }
+                catch
+                {
+                    Console.WriteLine("Неверно введены аргументы. Перезапустите программу и будте внимательны!");
+                }
             }
             else {
-                ResultOfProgramStr res = new ResultOfProgramStr();
-                res.ShowResult();
+                try
+                {
+                    ResultOfProgramStr res = new ResultOfProgramStr();
+                    res.ShowResult();
+                }
+                catch
+                {
+                    Console.WriteLine("Неверно введены аргументы. Перезапустите программу и будте внимательны!");
+                }
             }
         }
     }
